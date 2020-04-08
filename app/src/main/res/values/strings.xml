@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Youpix</string>
+    <string name="buttonName">Concatenate</string>
+    <string name="enterText">Enter Text</string>
+    <string name="pic">Pic</string>
+    <string name="image">Image</string>
+    <string name="search_pictures">Search</string>
+    <string name="clear_caches">Clear cache</string>
+    <string name="findpictures">Find</string>
+    <string name="gobutton">Go</string>
+</resources>

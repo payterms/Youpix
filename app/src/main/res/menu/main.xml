@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ru.payts.youpics.coursework.view.MainActivity">
+
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:orderInCategory="20"
+        app:showAsAction="ifRoom"
+        android:title="@string/search_pictures" />
+
+    <item
+        android:id="@+id/menu_clearcache"
+        android:orderInCategory="30"
+        android:title="@string/clear_caches"
+        app:showAsAction="never"/>
+
+</menu>
