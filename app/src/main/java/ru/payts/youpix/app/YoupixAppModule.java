@@ -75,7 +75,7 @@ public class YoupixAppModule {
     @Provides
     YoupixDatabase provideappDatabase() {
         return Room.databaseBuilder(application.getApplicationContext(),
-                YoupixDatabase.class, "youpics_database").build();
+                YoupixDatabase.class, "youpix_database").build();
     }
 
 
