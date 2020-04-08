@@ -53,36 +53,36 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     private HitDao hitDao;
 
-    private Context context;
+    private Context appContext;
 
     public MainPresenter(Context ct) {
         YoupixApp.getAppComponent().injectMainPresenter(this);
         Log.d(TAG, "MainPresenter: ");
         recyclerMain = new RecyclerMain();
         Log.d(TAG, "recyclerMain: ");
-        context = ct;
+        appContext = ct;
         hitDao = appDatabase.hitDao();
     }
 
     @Override
     protected void onFirstViewAttach() {
-        getPhotoListFromServer(context, "", true);
+        getPhotoListFromServer(appContext, "", true);
     }
 
-    public void clearPicturesCache(Context context) {
+    public void clearPicturesCache(Context appContext) {
         photoData.clearList();
         glideLoader.clearAllImagesFromStorage();
         Disposable disposable = hitDao.deleteAll().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     Log.d(TAG, "Database cleared");
-                    getPhotoListFromServer(context, "", true);
+                    getPhotoListFromServer(appContext, "", true);
 
                 }, throwable -> Log.d(TAG, "clearPicturesCache DB err " + throwable));
 
     }
 
-    public void getPhotoListFromServer(Context context, String query, boolean editors_choice) {
-        String apiKey = context.getString(R.string.pixabay_api_key);
+    public void getPhotoListFromServer(Context appContext, String query, boolean editors_choice) {
+        String apiKey = appContext.getString(R.string.pixabay_api_key);
         /* чистим список фотографий для отображения*/
         photoData.clearList();
 
@@ -116,7 +116,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
                             Disposable disposableDaoInsert = hitDao.insert(dbRec).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(id -> {
                                         Log.d(TAG, "Picture with ID " + hitItem.id + "  added to Database");
-                                        glideLoader.loadImageFromServer2Cache(context, hitItem);
+                                        glideLoader.loadImageFromServer2Cache(appContext, hitItem);
                                         // добавляем в список для RecycleView
                                         photoData.addElement(hitItem);
                                         if (photoSet.hits.size() == photoData.getHitListSize()) {
@@ -191,7 +191,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
                     // Если исключения не возникло - и ссылка живая , то добавляем в список
                     hitlist.add(hit);
                 } catch (FileNotFoundException e) {
-                    String apiKey = context.getString(R.string.pixabay_api_key);
+                    String apiKey = appContext.getString(R.string.pixabay_api_key);
                     Observable<PhotoSet> single = apiHelper.requestServerByID(apiKey, hit.id);
                     Disposable disposableUpd = single.observeOn(AndroidSchedulers.mainThread()).subscribe(photoSet -> {
                         updateItemsByPicIdInDatabase(photoSet.hits.get(0));
